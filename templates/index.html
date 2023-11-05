@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sentiment Analysis</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url('static/B.jpg'); 
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
+        h1 {
+            text-align: center;
+        }
+        label {
+            font-weight: bold;
+        }
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+        input[type="submit"] {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        h2 {
+            margin-top: 20px;
+            text-align: center;
+        }
+        #plotly-chart {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Sentiment Analysis</h1>
+        <form action="/" method="POST">
+            <label for="text">Enter a text:</label><br>
+            <textarea id="text" name="text" rows="4" cols="50"></textarea><br><br>
+            <input type="submit" name="predict" value="Predict">
+        </form>
+    
+        <div id="input-text">
+            {% if input_text %}
+            <p>You entered: {{ input_text }}</p>
+            {% endif %}
+        </div>
+        <div id="preprocessed-text">
+            {% if preprocessed_text %}
+            <p>The meaning of the sentence you entered is: {{ preprocessed_text }}</p>
+            {% endif %}
+        </div>
+        <div id="prediction-result">
+            {% if predicted_label %}
+            <h2>{{ predicted_label }}</h2>
+            {% endif %}
+        </div>
+    
+        <form action="/" method="POST">
+            <label for="chart-type">Select a chart type:</label>
+            <select id="chart-type" name="chart-type">
+                <option value="bar" {% if selected_chart == 'bar' %}selected{% endif %}>Bar Chart</option>
+                <option value="pie" {% if selected_chart == 'pie' %}selected{% endif %}>Pie Chart</option>
+            </select>
+            <input type="hidden" name="text" value="{{ input_text }}">
+            <input type="submit" name="chart-select" value="Select">
+        </form>
+        
+        <div id="plotly-chart">
+            {% if plotly_chart %}
+                {{ plotly_chart | safe }}
+            {% endif %}
+            {% if plotly_pie_chart %}
+                {{ plotly_pie_chart | safe }}
+            {% endif %}
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap/dist/js/bootstrap.bundle.min.js"></script>   
+</body>
+</html>
